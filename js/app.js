@@ -1,5 +1,5 @@
 /* ==========================================================================
-   LessonPlan AI Nigeria — client application
+   Binomar AI Lesson Planner — client application
    Vanilla JS, hash-routed SPA. No build step required.
 
    Data flow:
@@ -613,7 +613,7 @@ const Chat = {
     } catch (err) {
       console.warn(err);
       loading.remove();
-      Chat.append('bot', "I couldn't reach the AI assistant. Make sure OPENAI_API_KEY is configured on the server (see README), then try again.");
+      Chat.append('bot', "I couldn't reach the AI assistant. Make sure GROQ_API_KEY is configured on the server (see README), then try again.");
     }
   },
 

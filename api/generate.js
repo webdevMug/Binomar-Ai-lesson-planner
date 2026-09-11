@@ -6,21 +6,22 @@
  *   "section" — regenerate a single section
  *   "action"  — apply a quick edit (Simplify, Expand, etc.) to a section
  *
- * Requires OPENAI_API_KEY set as an environment variable in your Vercel
- * project (Project → Settings → Environment Variables). The key is only
- * ever used here, server-side — never sent to the browser.
+ * Requires GROQ_API_KEY set as an environment variable in your Vercel
+ * project (Project → Settings → Environment Variables). Get a free key,
+ * no credit card required, at console.groq.com. The key is only ever
+ * used here, server-side — never sent to the browser.
  */
 
-import { callOpenAI } from './_lib/openai.js';
+import { callAI } from './_lib/ai.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
-    return res.status(500).json({ error: 'OPENAI_API_KEY is not configured on the server' });
+    return res.status(500).json({ error: 'GROQ_API_KEY is not configured on the server' });
   }
 
   const body = req.body;
@@ -77,7 +78,7 @@ ${curriculumContextBlock(curriculumRecord)}
 Return a JSON object with exactly these keys: ${keys.join(', ')}.
 Each value should be classroom-ready plain text for that section.`;
 
-  const raw = await callOpenAI(apiKey, [
+  const raw = await callAI(apiKey, [
     { role: 'system', content: systemPrompt },
     { role: 'user', content: userPrompt }
   ], { maxTokens: 3000, json: true });
@@ -101,7 +102,7 @@ async function generateSectionEdit(body, apiKey) {
 Apply this instruction: "${instruction}". Return the revised section content only.`;
   }
 
-  const raw = await callOpenAI(apiKey, [
+  const raw = await callAI(apiKey, [
     { role: 'system', content: systemPrompt },
     { role: 'user', content: userPrompt }
   ], { maxTokens: 1200 });
