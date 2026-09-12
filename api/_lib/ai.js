@@ -13,9 +13,11 @@
  */
 
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
-const DEFAULT_MODEL = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
+const DEFAULT_MODEL = process.env.GROQ_MODEL || 'openai/gpt-oss-120b';
 // ^ check console.groq.com/docs/models for the current available models;
 //   override with the GROQ_MODEL env var without touching this file.
+//   (llama-3.3-70b-versatile was Groq's default here until Aug 2026, when
+//   Groq deprecated it in favor of openai/gpt-oss-120b and qwen/qwen3.6-27b.)
 
 export async function callAI(apiKey, messages, opts = {}) {
   const body = {
